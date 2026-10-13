@@ -1,26 +1,11 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\MemberController; 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('books.index');
 });
 
-// Route::get('/dashboard', function () {
-//     //return 'Daftar Buku';
-//     return view('book.index');
-// });
-
-Route::get('/books', [BookController::class, 'index']);
-
-Route::get('/dashboard', [DashboardController::class, 'index']);
-
-Route::get('/books/{id}', [BookController::class, 'show']);
-
-Route::get('/categories', [CategoryController::class, 'index']);
-
-Route::get('/members', [MemberController::class, 'index']);
+Route::resource('books', BookController::class);

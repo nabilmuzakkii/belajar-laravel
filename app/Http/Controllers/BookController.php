@@ -2,48 +2,83 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Models\Book;
 
 class BookController extends Controller
 {
     public function index()
     {
-        // $books = [
-        //     [
-        //         'title' => 'Pemrograman PHP',
-        //         'author' => 'Rizqi',
-        //         'year' => 2022
-        //     ],
-        //     [
-        //         'title' => 'Laravel untuk Pemula',
-        //         'author' => 'Jeki',
-        //         'year' => 2023
-        //     ],
-        //     [
-        //         'title' => 'Basis Data',
-        //         'author' => 'Zhilan',
-        //         'year' => 2021
-        //     ],
-        //     [
-        //         'title' => 'Algoritma dan Pemrograman',
-        //         'author' => 'Dadang',
-        //         'year' => 2022
-        //     ],
-        //     [
-        //         'title' => 'Pemrograman Berorientasi Objek',
-        //         'author' => 'Lukman',
-        //         'year' => 2024
-        //     ]
-        // ];
-
         $books = Book::all();
+        $title = 'Daftar Buku';
 
-        return view('Books.index', compact('books'));
+        return view('books.index', compact('title', 'books'));
     }
 
-    public function show($id)
+    public function create()
     {
-        return view('Books.show', compact('id'));
+        return view('books.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'year' => 'required|integer',
+            'stock' => 'required|integer|min:0',
+        ]);
+
+        Book::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'year' => $request->year,
+            'stock' => $request->stock,
+        ]);
+
+        return redirect()->route('books.index');
+    }
+
+    public function show(string $id)
+    {
+        $book = Book::findOrFail($id);
+
+        return view('books.show', compact('book'));
+    }
+
+    public function edit(string $id)
+    {
+        $book = Book::findOrFail($id);
+
+        return view('books.edit', compact('book'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'year' => 'required|integer',
+            'stock' => 'required|integer|min:0',
+        ]);
+
+        $book = Book::findOrFail($id);
+
+        $book->update([
+            'title' => $request->title,
+            'author' => $request->author,
+            'year' => $request->year,
+            'stock' => $request->stock,
+        ]);
+
+        return redirect()->route('books.index');
+    }
+
+    public function destroy(string $id)
+    {
+        $book = Book::findOrFail($id);
+        $book->delete();
+
+        return redirect()->route('books.index');
     }
 }
