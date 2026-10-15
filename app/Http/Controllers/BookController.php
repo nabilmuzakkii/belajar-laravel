@@ -22,21 +22,18 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'year' => 'required|integer',
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900',
             'stock' => 'required|integer|min:0',
         ]);
 
-        Book::create([
-            'title' => $request->title,
-            'author' => $request->author,
-            'year' => $request->year,
-            'stock' => $request->stock,
-        ]);
+        Book::create($validated);
 
-        return redirect()->route('books.index');
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil ditambahkan.');
     }
 
     public function show(string $id)
@@ -55,23 +52,19 @@ class BookController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'year' => 'required|integer',
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900',
             'stock' => 'required|integer|min:0',
         ]);
 
         $book = Book::findOrFail($id);
+        $book->update($validated);
 
-        $book->update([
-            'title' => $request->title,
-            'author' => $request->author,
-            'year' => $request->year,
-            'stock' => $request->stock,
-        ]);
-
-        return redirect()->route('books.index');
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil diperbarui.');
     }
 
     public function destroy(string $id)
@@ -79,6 +72,8 @@ class BookController extends Controller
         $book = Book::findOrFail($id);
         $book->delete();
 
-        return redirect()->route('books.index');
+        return redirect()
+            ->route('books.index')
+            ->with('success', 'Buku berhasil dihapus.');
     }
 }

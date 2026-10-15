@@ -13,26 +13,50 @@
 
         <div>
             <label>Judul Buku:</label>
-            <input type="text" name="title"
-                   value="{{ $book->title }}" required>
+            <input
+                type="text"
+                name="title"
+                value="{{ old('title', $book->title) }}"
+            >
+            @error('title')
+                <p>{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
-            <label>Penulis:</label>
-            <input type="text" name="author"
-                   value="{{ $book->author }}" required>
+            <label>Penulis Buku:</label>
+            <input
+                type="text"
+                name="author"
+                value="{{ old('author', $book->author) }}"
+            >
+            @error('author')
+                <p>{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
-            <label>Tahun:</label>
-            <input type="number" name="year"
-                   value="{{ $book->year }}" required>
+            <label>Tahun Terbit:</label>
+            <input
+                type="number"
+                name="year"
+                value="{{ old('year', $book->year) }}"
+            >
+            @error('year')
+                <p>{{ $message }}</p>
+            @enderror
         </div>
 
         <div>
-            <label>Stok:</label>
-            <input type="number" name="stock"
-                   value="{{ $book->stock }}" min="0" required>
+            <label>Stok Buku:</label>
+            <input
+                type="number"
+                name="stock"
+                value="{{ old('stock', $book->stock) }}"
+            >
+            @error('stock')
+                <p>{{ $message }}</p>
+            @enderror
         </div>
 
         <button type="submit">Update</button>
