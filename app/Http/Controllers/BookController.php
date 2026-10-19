@@ -14,7 +14,6 @@ class BookController extends Controller
 
         return view('books.index', compact('title', 'books'));
     }
-
     public function create()
     {
         return view('books.create');
@@ -23,10 +22,10 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'year' => 'required|integer|min:1900',
-            'stock' => 'required|integer|min:0',
+            'title' => 'required|string|min:3|max:255|unique:books,title',
+            'author' => 'required|string|min:3|max:255',
+            'year' => 'required|integer|min:1900|max:2026',
+            'stock' => 'required|integer|min:0|max:100',
         ]);
 
         Book::create($validated);
@@ -43,6 +42,7 @@ class BookController extends Controller
         return view('books.show', compact('book'));
     }
 
+
     public function edit(string $id)
     {
         $book = Book::findOrFail($id);
@@ -55,7 +55,7 @@ class BookController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'year' => 'required|integer|min:1900',
+            'year' => 'required|integer|min:1900|max:2026',
             'stock' => 'required|integer|min:0',
         ]);
 
