@@ -81,7 +81,7 @@
             @enderror
         </div>
 
-        <button type="submit">Update</button>
+        <button type="submit">Simpan</button>
     </form>
 
 @endsection
