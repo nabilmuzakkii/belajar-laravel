@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -15,6 +14,10 @@
             <a href="/books">Books</a> |
             <a href="/categories">Categories</a> |
             <a href="/members">Members</a>
+
+            @can('manage-users')
+                | <a href="{{ route('users.index') }}">Kelola Pengguna</a>
+            @endcan
 
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
